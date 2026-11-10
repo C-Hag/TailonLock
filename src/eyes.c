@@ -141,7 +141,7 @@ static void put(const void *b, size_t n) {
 
 static char   sheet[1 << 16];
 static size_t used;
-static void line(const char *f, ...) __attribute__((format(printf, 1, 2)));
+static void line(const char *f, ...) TL_PRINTF(1, 2);
 static void line(const char *f, ...) {
   va_list a;
   va_start(a, f);

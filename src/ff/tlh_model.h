@@ -42,7 +42,7 @@ static inline int tlh_err(Rc *r, TlhModel *m, int ctx, int e) {
   if (!bit_ad(r, &m->zero[ctx], e != 0)) return 0;
   int neg = bit_ad(r, &m->sign[ctx], e < 0);
   uint32_t mag = (uint32_t)(e < 0 ? -e : e); /* 1 .. 65535 */
-  int bits = 32 - __builtin_clz(mag | 1), n = 1;
+  int bits = ff_bits(mag | 1), n = 1;
   while (n < 16 && bit_ad(r, &m->len[ctx][n], bits > n)) n++; /* the length, one yes/no a step (at most 16 bits) */
   uint32_t v = 1;
   for (int i = n - 2; i >= 0; i--) { /* the bits below the top one */

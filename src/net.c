@@ -971,13 +971,15 @@ static void take_event(Buf *p, Game *g, bool apply) {
     if (apply && !p->bad && pi < g->nplanes && g->planes[pi].remote) sim_remote_flares(g, &g->planes[pi], chaff != 0);
     return;
   }
-  if (kind != NE_MISSILE && kind != NE_GONE) { /* not one we know: its length is unknown too, so nothing after it */
+  /* not one we know: its length is unknown too, so nothing after it */
+  if (kind != NE_MISSILE && kind != NE_GONE && kind != NE_TANKER) {
     p->bad = true;
     return;
   }
   if (kind == NE_TANKER) {
     int pi = get8(p);
-    if (apply && N.role == R_HOST && pi < g->nplanes && g->planes[pi].remote) sim_call_tanker(g, &g->planes[pi]);
+    if (apply && !p->bad && N.role == R_HOST && pi < g->nplanes && g->planes[pi].remote)
+      sim_call_tanker(g, &g->planes[pi]);
     return;
   }
   Missile m = { 0 };
@@ -1121,10 +1123,18 @@ static void take_state(Game *g, Buf *p) {
     int kc[MAX_PLANES];
     for (int j = 0; j < MAX_PLANES; j++) kc[j] = get8(p);
     if (p->bad || i >= g->nplanes || !g->planes[i].remote) continue;
+    /* numbers a jet can have: finite, a place on any map, a direction and an up that are not zero, a speed and a
+     * health in range. A forged or broken snapshot is dropped, so nothing huge reaches the plane's motion or the
+     * terrain. */
+    if (!finite3(pos) || !finite3(f) || !finite3(u) || !finite3(vel)) continue;
+    f = v3_norm(f), u = v3_norm(u);
+    bool ok = fabsf(pos.x) < 1e6f && fabsf(pos.y) < 1e6f && fabsf(pos.z) < 1e6f && v3_len(f) > 0.5f &&
+              v3_len(u) > 0.5f && fabsf(speed) < 1e4f && fabsf(thr) < 1e4f && fabsf(hp) < 1e6f;
+    if (!ok) continue;
     Plane *q = &g->planes[i];
     q->snap.pos = pos;
-    q->snap.f = v3_norm(f);
-    q->snap.u = v3_norm(u);
+    q->snap.f = f;
+    q->snap.u = u;
     q->snap.vel = v3_len(vel) < 600 ? vel : v3_scale(q->snap.f, speed);
     q->snap.speed = speed;
     q->snap.thr = thr;
