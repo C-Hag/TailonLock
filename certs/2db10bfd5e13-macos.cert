@@ -1,0 +1,18 @@
+TAILON LOCK AUDIT CERTIFICATE
+kind: system
+system: macos
+commit: 2db10bfd5e136ef0f8a75fff2447df1ef40983af
+date: 2026-11-08 13:28
+
+block 1 clean: PASS | clean tree | seal 5a1e5dbacab6be7479cf04478b133a64aaf9090937d5dd649b9c4b0241ea14c5
+block 2 build: PASS | built macos-release, macos-debug with warnings as errors | seal 8249f40a7a99d62ae3f729de751c05e95354e8a8ac9ebfc3ee5b004b8f74e3a9
+block 3 tests: PASS | 29 of 29 tests passed | seal 039c121fb2a497b54391517ed3e9b46e11037bdad22bffe17d1f009322d896a6
+block 4 gate: PASS | system frameworks only (10), x86_64 + arm64 | seal 48e53ea15ad9cde69dc2d91a68ccf836dadc25b29d57c92650eaa5953104736e
+block 5 smoke: PASS | offline: playtest: 7 matches played, 7 agree on both computers, 0 of 7 pairs with problems; network: playtest: 4 matches played, 4 agree on both computers, 0 of 4 pairs with problems | seal ecce57bd0945acbdd9a1dee8acdc8accbfc00075a57c8d5c6763ca3f3125a0f9
+block 6 offline: PASS | playtest: 56 matches played, 56 agree on both computers, 0 of 56 pairs with problems | seal 0567c8f7aa5a2f382aa0594fce3cb937a4904819c83568a6ec9911cf1cd0d7e8
+block 7 network: PASS | playtest: 40 matches played, 40 agree on both computers, 0 of 10 pairs with problems | seal b149ecae681b70f16a8c5c21c8c515e4b479b3c94cbd428d27a4b361bfb1db33
+block 8 sanitizer: PASS | ASan + UBSan: playtest: 24 matches played, 24 agree on both computers, 0 of 24 pairs with problems | seal 60196c72a2e7019d09a21c56ef78b72de82c497524657111a55eac76c68e06ea
+block 9 soak: PASS | playtest: 20 matches played, 20 agree on both computers, 0 of 1 pairs with problems | seal 24154fd86267d129285bb4676accc60fd1f14bc0dfcd3b1354943743a4bf9dc8
+block 10 behaviour: PASS | every jet on its data sheet; the systems (68 checks); 1008 matches, no fault, no timeout; digest ede876e2fb7c2de1 as on every system | seal 2b682d327c1b0a06830b867f7803ee9d5f485509bcb8e660ba792ce6f224894a
+
+seal: 2b682d327c1b0a06830b867f7803ee9d5f485509bcb8e660ba792ce6f224894a
